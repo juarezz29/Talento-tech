@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 class LoginPage:
     #URL
@@ -40,6 +41,7 @@ class LoginPage:
         self.abrir_pagina()
         self.ingresar_usuario(usuario)
         self.ingresar_contraseña(password)
+        time.sleep(2)
         self.hacer_clic_button()
         return self
     

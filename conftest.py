@@ -10,10 +10,10 @@ def driver():
     driver.quit()
 
 @pytest.fixture
-def login_in_driver(driver):
-    from pages.login_pages import LoginPage
+def login_in_driver(driver, usuario, password):
+    from pages.login_pages import LoginPage 
     login_page = LoginPage(driver)
-    login_page.login_completo("standard_user", "secret_sauce")
+    LoginPage(driver).abrir_pagina().login_completo(usuario, password)
     return driver
 
 @pytest.fixture
