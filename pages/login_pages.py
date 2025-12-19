@@ -4,46 +4,46 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 class LoginPage:
+    
     #URL
     URL = "https://www.saucedemo.com/"
 
-    _USER_INPUT= (By.ID, "user-name")
-    _PASS_INPUT= (By.ID, "password")
-    _LOGIN_BUTTON= (By.ID, "login-button")
+    _USER_INPUT = (By.ID,"user-name")
+    _PASS_INPUT = (By.ID,"password")
+    _LOGIN_BUTTON = (By.ID, "login-button")
 
-    def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+
+    def __init__(self,driver):
+        self.driver = driver 
+        self.wait = WebDriverWait(driver,10)
 
     def abrir_pagina(self):
         self.driver.get(self.URL)
         return self
     
-    def ingresar_usuario(self, usuario):
-        user_input = self.wait.until(EC.visibility_of_all_elements_located(self._USER_INPUT))
-        user_input = user_input[0]
-        user_input.clear()
-        user_input.send_keys(usuario)
+    def completar_user(self,usuario):
+        input = self.wait.until(EC.visibility_of_element_located(self._USER_INPUT))
+        input.clear()
+        input.send_keys(usuario)
         return self
     
-    def ingresar_contraseña(self, password):
-        pass_input = self.wait.until(EC.visibility_of_element_located(self._PASS_INPUT))
-        pass_input.clear()
-        pass_input.send_keys(password)
+    def completar_pass(self,password):
+        input = self.driver.find_element(*self._PASS_INPUT)
+        input.clear()
+        input.send_keys(password)
         return self
     
-    def hacer_clic_button(self):
-        clic_button = self.driver.find_element(*self._LOGIN_BUTTON)
-        clic_button.click()
+    def hacer_click_button(self):
+        self.driver.find_element(*self._LOGIN_BUTTON).click()
         return self
-    
-    def login_completo(self, usuario, password):
-        self.abrir_pagina()
-        self.ingresar_usuario(usuario)
-        self.ingresar_contraseña(password)
-        time.sleep(2)
-        self.hacer_clic_button()
+
+    def login_completo(self,usuario,password):
+        self.completar_user(usuario)
+        self.completar_pass(password)
+        time.sleep(3)
+        self.hacer_click_button()
         return self
-    
-    def cerrar_navegador(self):
-        self.driver.quit()
+
+    def obtener_error(self):
+        div_error = self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,".error-message-container h3")))
+        return div_error.text

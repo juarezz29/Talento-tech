@@ -1,9 +1,12 @@
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as options    
 
 
 @pytest.fixture
 def driver():
+    options = options()
+    options.add_argument ("--incoognito")
     driver = webdriver.Chrome()
     driver.implicitly_wait(5)
     yield driver

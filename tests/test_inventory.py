@@ -1,20 +1,31 @@
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+import pytest
+from pages.inventory_pages import InventoryPage
 
-def test_inventory_page_elements(login_in_driver):
-    driver = login_in_driver
+@pytest.mark.parametrize("usuario,password", [("standard_user", "secret_sauce")])
+
+def test_inventory(login_in_driver, usuario, password):
 
     try:
-        # Verificar que el título de la página de inventario sea correcto
-        inventory_title = driver.find_element(By.CLASS_NAME, "title").text
-        assert inventory_title == "Products", "El título de la página de inventario no es correcto."
+        driver = login_in_driver
 
-        # Verificar que haya al menos un producto listado en la página de inventario
-        products = driver.find_elements(By.CLASS_NAME, "inventory_item")
-        assert len(products) > 0, "No se encontraron productos en la página de inventario."
+        inventory_page = InventoryPage(driver)
+       #Verificar que los productos son visibles
+        assert len(inventory_page.obtener_todos_los_productos()) > 0, "No hay productos visibles en la pagina"
 
-        print("Elementos de la página de inventario validados correctamente")
+       #Verificar que el carrito de compras esta vacio
+        assert inventory_page.obtener_carrito_vacio() == 0
 
-    except AssertionError as e:
-        print(f"Error en test_inventory_page_elements: {e}")
+       #Agregar un producto al carrito de compras
+        inventory_page.agregar_producto_al_carrito_por_indice(0)
+
+       #Verificar que el conteo del carrito de compras es 
+        assert inventory_page.obtener_conteo_carrito() == 1, "El conteo del carrito de compras no es correcto despues de agregar un producto"
+
+
+    except Exception as e:
+        print(f"Error en test_inventory: {e}")
         raise
+    finally:
+        driver.quit()

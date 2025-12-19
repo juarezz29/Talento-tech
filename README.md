@@ -92,6 +92,14 @@ Para verificar la instalación
 chromedriver --version
 
 
+------------------------------------------------
+FAKER:
+
+pip install faker
+
+
+-------------------------------------------------
+
 
 **Como ejecutar las pruebas?**
 Ejecutar todas las pruebas con el script del proyecto
